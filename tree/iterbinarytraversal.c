@@ -92,6 +92,34 @@ void iterInOrder(element root){
     }
 }
 
+void iterPostOrder(element root){
+    StackType S;
+    init(&S);
+
+    element prev = NULL;
+
+    while(root != NULL || !isEmpty(&S)){
+        // 1. 왼쪽 끝까지 방문 (L) 
+        while(root != NULL){
+            push(&S, root);
+            root = root->left;
+        }
+
+        // 2. Stack Top 확인
+        element cur = S.stack[S.top];
+
+        // 3. 오른쪽이 없거나 방문했으면 방문
+        if(cur->right == NULL || cur->right == prev){
+            printf("[%c] ",cur->data);
+            pop(&S);
+            prev = cur;
+            root = NULL;
+        }else {
+            root = cur->right;
+        }
+    }
+}
+
 void iterTreeReverse(element root){
     if (root == NULL) return;
 
@@ -128,7 +156,7 @@ int main(){
 
     printf("Pre : "); iterPreOrder(N1); puts("");
     printf("In : "); iterInOrder(N1); puts("");
-    // printf("Post : "); postOrder(N1); puts("\n");    
+    printf("Post : "); iterPostOrder(N1); puts("\n");    
 
     // printf("Node Count : %d\n",nodeCount(N1));
     // printf("height : %d\n",height(N1));

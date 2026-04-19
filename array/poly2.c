@@ -4,7 +4,7 @@
 
 typedef struct terms{
     int expon;
-    int coef;
+    double coef;
 } Terms[MAX_TERMS];
 
 typedef struct polynomial{
@@ -16,7 +16,7 @@ Poly makePoly(){
     Poly p;
     printf("다항식의 항의 수 입력: ");
     scanf("%d",&p.nTerms);
-    printf("고차항부터 항의 계수 지수 입력: ");
+    printf("고차항부터 항의 계수 지수 입력: \n");
     for(int i=0;i<p.nTerms;i++){
         printf("%d : ",i+1);
         scanf("%lf %d", &p.terms[i].coef, &p.terms[i].expon);
@@ -25,8 +25,8 @@ Poly makePoly(){
 
 void print(Poly p, const char* str){
     printf("%s",str);
-    for(int i=0; i<p.nTerms, i++){
-        printf("%d.1f x^%d + ", p.terms[i].coef, p.terms[i].expon);
+    for(int i=0; i<p.nTerms; i++){
+        printf("%.1lf x^%d + ", p.terms[i].coef, p.terms[i].expon);
     }
     printf("\b\b  \n");
 }

@@ -46,8 +46,8 @@ int nodeCount(TreeNode* root){
         return 0;
     else 
         return 1 + nodeCount(root->left) + nodeCount(root->right);
-
 }
+
 // 단말노드의 개수만 세기 : 
 int isExternal(TreeNode* root){
     return (root->left == NULL) && (root->right == NULL);
