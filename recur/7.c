@@ -18,7 +18,10 @@ int check(char ch, char* str){
 int main(){
     char str[101], ch;
     fgets(str, sizeof(str), stdin);
-    str[strlen(str)-1] = '\0';
+    size_t len = strlen(str);
+    if (len > 0 && str[len - 1] == '\n') {
+        str[len - 1] = '\0';
+    }
     scanf(" %c",&ch); // getchar or " %c", fflush(stdin)???
     printf("%d\n",check(ch, str));
 }
