@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #define N 6
+#define QSIZE (N * N + 1)
 
 char map[N][N] = {
     {'1','1','1','1','1','1'},
@@ -15,78 +16,72 @@ char map[N][N] = {
 typedef struct
 {
     int r, c;
-}Coor;
-
+} Coor;
 
 typedef Coor element;
-typedef struct 
+typedef struct
 {
-    element stack[N];
-    int top;
-} StackType;
+    element queue[QSIZE];
+    int front, rear;
+} QueueType;
 
-void init(StackType* S){
-    S->top = -1;
+void init(QueueType* Q){
+    Q->front = Q->rear = 0;
 }
 
-int isEmpty(StackType* S){
-    return S->top == -1;
+int isEmpty(QueueType* Q){
+    return Q->front == Q->rear;
 }
 
-int isFull(StackType *S){
-    return S->top == N-1;
+int isFull(QueueType *Q){
+    return Q->front == (Q->rear + 1) % QSIZE;
 }
 
-void push(StackType *S, element e){
-    if (isFull(S)) printf("Overflow\n");
+void enqueue(QueueType *Q, element e){
+    if (isFull(Q)) printf("Overflow\n");
     else {
-        S->top++;
-        S->stack[S->top] = e;
+        Q->rear = (Q->rear + 1) % QSIZE;
+        Q->queue[Q->rear] = e;
     }
 }
 
-void print(StackType *S){
-    // for(int i=S->top;i>=0;i--){
-    //     printf(" |  %c  |\n",S->stack[i]);
-    //     printf("  ______ \n");
-    // }
+element dequeue(QueueType *Q){
+    if (isEmpty(Q)) {
+        puts("Empty!");
+        return (element){-1, -1};
+    }
+    else {
+        Q->front = (Q->front + 1) % QSIZE;
+        return Q->queue[Q->front];
+    }
+}
+
+void print(QueueType *Q){
     printf("[ ");
-    for(int i = S->top; i>=0;i--){
-        printf("(%d, %d) ", S->stack[i].r, S->stack[i].c);
+    if(!isEmpty(Q)){
+        int i = Q->front;
+        while(i != Q->rear){
+            i = (i + 1) % QSIZE;
+            printf("(%d, %d) ", Q->queue[i].r, Q->queue[i].c);
+        }
     }
     puts("]");
 }
 
-element pop(StackType *S){
-    if(isEmpty(S)){
-        puts("Empty!");
-        return (element){-1, -1};
-    }
-    element e = S->stack[S->top];
-    S->top--;
-    return e;
-}
-
-element peek(StackType *S){
-    if(isEmpty(S)){
-        puts("Empty!");
-        return (element){-1, -1};
-    }
-    return S->stack[S->top];
-}
-
-void insertPos(StackType* S, int r, int c){
+void insertPos(QueueType* Q, int r, int c){
     if(r < 0 || c < 0 || r >= N || c >= N) return;
 
     if(map[r][c] != '0' && map[r][c] != 'x') return;
 
     element pos = {r, c};
-    push(S, pos);
+    enqueue(Q, pos);
+
+    if(map[r][c] == '0') map[r][c] = '.';   // enqueue 시 방문 표시해서 중복 삽입 방지
 }
 
 void printMaze(element e){
-    for(int r = 0;r < N; r++){
-        for(int c=0; c<N; c++){
+    for(int r = 0; r < N; r++){
+        for(int c = 0; c < N; c++){
             if(e.r == r && e.c == c) printf(" @ ");
             else printf(" %c ", map[r][c]);
         }
@@ -96,29 +91,29 @@ void printMaze(element e){
 }
 
 int main(){
-    StackType S;
-    init(&S);
-    int order = 1;
+    QueueType Q;
+    init(&Q);
+    int found = 0;
 
-    insertPos(&S, 1, 0);
-    while(!isEmpty(&S)){
-        element e = pop(&S);
+    insertPos(&Q, 1, 0);
+
+    while(!isEmpty(&Q)){
+        element e = dequeue(&Q);
         int r = e.r, c = e.c;
 
-        // printf("%2d. (%d, %d) : ",order++, r, c);
         printMaze(e);
-        if(map[r][c] == 'x') {
+        if(map[r][c] == 'x'){
             puts("Success.");
+            found = 1;
             break;
-        } else {
-            map[r][c] = '.';
-            insertPos(&S, r+1, c);
-            insertPos(&S, r-1, c);
-            insertPos(&S, r, c+1);
-            insertPos(&S, r, c-1);
         }
-        // print(&S);
 
+        insertPos(&Q, r + 1, c);
+        insertPos(&Q, r - 1, c);
+        insertPos(&Q, r, c + 1);
+        insertPos(&Q, r, c - 1);
     }
+
+    if(!found) puts("Fail.");
     return 0;
 }
