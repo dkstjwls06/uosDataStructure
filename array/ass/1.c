@@ -1,5 +1,11 @@
 #include <stdio.h>
 
+void swap(int* a, int* b){
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
 int main(){
     int N;
     scanf("%d",&N);
@@ -14,11 +20,13 @@ int main(){
         scanf("%d %d", from+i, to+i);
     }
     for (int i=0; i<m; i++){
-        int temp[to[i]-from[i]];
-        for(int j=from[i]; j<=to[i];j++){
-            temp[j-from[i]] = X[j];
-        }
-        for(int j=from[i]; j<=to[i];j++){
-        }
+         // from[i] : 시작 인덱스, to[i] : 끝 인덱스
+        for(int j=from[i]; j <= (from[i]+to[i])/2; j++){
+            swap(X+j, X+(to[i]-j));
+        } 
     }
+    for(int i=0; i<N; i++){
+        printf("%d ",X[i]);
+    }
+    puts("");
 }
