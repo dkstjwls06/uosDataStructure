@@ -62,12 +62,6 @@ void insertFirst(ListType* L, element e){
     L->size++;
 }
 
-element deleteFirst(ListType* L){
-    if(isEmpty(L)){
-        puts("Empty.");
-    }
-}
-
 
 void insertPosition(ListType *L, element e, int pos){
     if(pos > L->size + 1 || pos <= 0){
@@ -77,8 +71,8 @@ void insertPosition(ListType *L, element e, int pos){
     if(pos == 1) insertFirst(L, e);
     else {
         Node* node = makeNode(e);
-        Node* p = L->head;
-        for(int i = 2; i < pos; i++) p = p->next;
+        Node* p = L->tail->next;
+        for(int i = 1; i < pos-1; i++) p = p->next;
         node->next = p->next;
         p->next = node;
         L->size++;
@@ -92,11 +86,17 @@ element deleteFirst(ListType *L){
         puts("Empty List!");
         return '\0'; // exit(1);
     }
-    Node* p = L->head;
+    Node* p = L->tail->next;
     element data = p->data;
-    L->head = p->next;
+    
+    if(L->size==1){
+        free(p);
+        L->tail = NULL;
+    } else {
+        L->tail->next = p->next;
+        free(p);
+    }
     L->size--;
-    free(p);   
     return data;
 
 }
@@ -114,12 +114,13 @@ element deletePosition(ListType* L, int pos){
     if(pos == 1){
         return deleteFirst(L);
     } else {
-        Node* p = L->head;
-        for(int i = 2; i < pos; i++) p = p->next;
+        Node* p = L->tail->next;
+        for(int i = 1; i < pos-1; i++) p = p->next;
         element data = p->next->data;
 
         Node* del = p->next;
         p->next = del->next;
+        if(del == L->tail) L->tail = p;
         free(del);
         L->size--;
         return data;
@@ -132,17 +133,17 @@ element getFirst(ListType *L){
         puts("Empty List!");
         return '\0'; // exit(1);
     }  
-    return L->head->data;
+    return L->tail->next->data;
 }
 // 리스트 스택은 따로 수업에서 구현 안할것임.
 
 void print(ListType* L){
-    Node* p = L->head;
-    while(p != NULL){
+    Node* p = L->tail->next;
+    do {
         printf("[%c] -> ",p->data);
         p = p->next;
-    }
-    puts("NULL");
+    }while(p != L->tail->next);
+    puts("(back to head)");
 }
 
 
