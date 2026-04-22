@@ -1,4 +1,4 @@
-// 단순연결리스트.
+// 원형연결리스트.
 
 #include <stdio.h>
 #include <stdlib.h>
