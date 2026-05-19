@@ -18,7 +18,7 @@ TreeNode* makeNode(Telement data, TreeNode* left, TreeNode* right){
 }
 
 void preOrder(TreeNode* root){
-    if(root != NULL){
+    if(     root != NULL){ 
         printf("[%c] ", root->data);
         preOrder(root->left);
         preOrder(root->right);

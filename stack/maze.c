@@ -102,6 +102,7 @@ int main(){
 
     insertPos(&S, 1, 0);
     while(!isEmpty(&S)){
+        // 이거는 깊이우선탐색이 아님 (사실 너비우선탐색)
         element e = pop(&S);
         int r = e.r, c = e.c;
 
