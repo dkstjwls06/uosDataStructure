@@ -1,3 +1,13 @@
+// 시간복잡도
+/*
+지금은 선택정렬이라 O(e**2)
+퀵정렬이나 힙정렬 쓰면 O(e log e)
+(정렬이 제일 오래 걸림)
+kruskal은 시작 정점 딱히 정하지 x
+
+*/
+
+
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -5,6 +15,7 @@
 
 #define N 20 // 간선 정렬 -> 배열로 만들기
 
+int vertices[] = {-1,-1,-1,-1,-1,-1,-1};
 
 typedef struct Edge
 {
@@ -144,7 +155,33 @@ void print(GraphType* G){
         for(AdjVertex* q = p->aHead; q != NULL; q= q->next) printf("([%c], [%d]) ",q->aName, q->e->weight);
         puts("");
     }
+}
 
+int Find(int vNum /* 정점을 의미하는 숫자 */){
+    while(vertices[vNum] != -1){
+        vNum = vertices[vNum];
+    }
+    return vNum;
+
+}
+
+void Union(int vNum1, int vNum2){
+    vertices[vNum2] = vNum1;
+}
+
+void kruskal(GraphType* G, Edge* edges[]){ // 그래프와 정렬된 간선 배열
+    int eCnt = 0, i = 0;
+    while(eCnt < G->vCount - 1){
+        Edge* e = edges[i]; // {'A', 'A', 10}, ...
+        int vNum1 = Find(e->v1 - 'A'); // 두 정점의 루트 노드 찾기
+        int vNum2 = Find(e->v2 - 'A');
+        if(vNum1 != vNum2) {
+            eCnt++;
+            printf("%d. [%c%c%d]\n", eCnt, e->v1, e->v2, e->weight);
+            Union(vNum1, vNum2);
+        }
+        i++;
+    }
 }
 
 
@@ -157,7 +194,7 @@ int main(){
     makeVertex(&G, 'E'); makeVertex(&G, 'F');
     makeVertex(&G, 'G');
     
-    insertEdge(&G, 'A', 'B', 29); insertEdge(&G, 'A', 'C', 10);
+    insertEdge(&G, 'A', 'B', 29); insertEdge(&G, 'A', 'F', 10);
     insertEdge(&G, 'B', 'C', 16); insertEdge(&G, 'B', 'G', 15);
     insertEdge(&G, 'C', 'D', 12);
     insertEdge(&G, 'D', 'E', 22); insertEdge(&G, 'D', 'G', 18);
@@ -167,6 +204,8 @@ int main(){
     
     Edge* edges[N];
     selectionSort(&G, edges);
+
+    kruskal(&G, edges);
 
 
 }
