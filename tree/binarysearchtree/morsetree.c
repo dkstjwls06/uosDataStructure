@@ -109,7 +109,7 @@ int main(){
     preOrder(root);puts("");
 
     char str[20];
-    char code[100];
+    char code[100] = "";
     printf("Input a word : ");
     scanf("%19s",str);
     for(int i=0;i<strlen(str);i++){

@@ -100,7 +100,7 @@ void main(){
     insert(&H, 9);insert(&H, 7);insert(&H, 6);
     insert(&H, 5);insert(&H, 4);insert(&H, 3);
     insert(&H, 2);insert(&H, 2);insert(&H, 1);
-    insert(&H, 9); print(&H); getchar();
+    insert(&H, 3); print(&H); getchar();
 
     insert(&H, 8); print(&H);getchar();
 
