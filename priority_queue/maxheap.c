@@ -104,6 +104,6 @@ void main(){
 
     insert(&H, 8); print(&H);getchar();
 
-    printf("[%d] [%d] : ", delete(&H), delete(&H)); print(&H);
+    printf("Delete [%d] : ", delete(&H)); print(&H);
     heapSort(&H);
 }

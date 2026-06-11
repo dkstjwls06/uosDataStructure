@@ -34,6 +34,7 @@ int findMin(){
             minVertex = i;
         }
     }
+    return minVertex;
 }
 
 void prim(int s){

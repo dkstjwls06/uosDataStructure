@@ -152,7 +152,7 @@ void selectionSort(GraphType* G, Edge* edges[]){
 void print(GraphType* G){
     for(Vertex* p = G->vHead; p!=NULL;p=p->next){
         printf("[%c] : ", p->vName);
-        for(AdjVertex* q = p->aHead; q != NULL; q= q->next) printf("([%c], [%d]) ",q->aName, q->e->weight);
+        for(AdjVertex* q = p->aHead; q != NULL; q= q->next) printf("([%c, %d]) ",q->aName, q->e->weight);
         puts("");
     }
 }

@@ -34,6 +34,8 @@ int findMin(){
             minVertex = i;
         }
     }
+
+    return minVertex;
 }
 
 void print(){
@@ -56,11 +58,10 @@ void dijkstra(int s){
             if(!visited[t] && graph[s][t] != INF)
                 if(dist[t] > dist[s] + graph[s][t])
                     dist[t] = dist[s] + graph[s][t];
-        printf("[%c] : ", vName[s]);
+
+        printf("[%c] : ",vName[s]);
         print();
     }
-    
-    
 
 }
 
